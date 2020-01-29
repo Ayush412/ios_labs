@@ -148,6 +148,7 @@ Future scan(int index) async {
       ),
     ),
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(title: Text('Welcome noob master $name', style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: 'Roboto'),),
