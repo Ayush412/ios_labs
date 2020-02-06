@@ -17,7 +17,7 @@ class _homeState extends State<home> {
 
  _homeState(this.name);
 String name;
-String barcodetext='Nope';
+String barcodetext='Snan a barcode';
 String desc;
 String addedby;
 TextEditingController descinp = TextEditingController();
@@ -151,7 +151,7 @@ Future scan(int index) async {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: Text('Welcome noob master $name', style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: 'Roboto'),),
+        appBar: AppBar(title: Text('Welcome $name', style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: 'Roboto'),),
         backgroundColor: Colors.white,
         elevation: 0.0,
         ),
@@ -188,7 +188,7 @@ Future scan(int index) async {
               height: 20,
               margin: EdgeInsets.only(top: 15),
               child: Center(
-              child: Text('Yeeted: $barcodetext')
+              child: Text('Code: $barcodetext')
               )),
         Container(
               width: 200,
