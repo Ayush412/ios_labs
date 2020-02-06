@@ -17,9 +17,9 @@ class _homeState extends State<home> {
 
  _homeState(this.name);
 String name;
-String barcodetext='Scan a barcode';
-String desc='';
-String addedby='';
+String barcodetext;
+String desc;
+String addedby;
 String username='';
 TextEditingController descinp = TextEditingController();
 TextEditingController costinp = TextEditingController();
@@ -80,21 +80,24 @@ Future addcode(String barcodetext) async {
                   },
                 ),
                 ],
-        content: new Column(
-          children: [
-            TextField(
-              controller: descinp,
-              decoration: new InputDecoration(labelText: 'Item description:', icon: Icon(Icons.description)),
-            ),
-            TextField(
-              controller: costinp,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-               WhitelistingTextInputFormatter.digitsOnly
-              ], // Only numbers can be entered
-              decoration: new InputDecoration(labelText: 'Item cost:', icon: Icon(Icons.monetization_on)),
-            ),
-          ]
+        content: Container(
+          height: 120,
+          child: new Column(
+            children: [
+              TextField(
+                controller: descinp,
+                decoration: new InputDecoration(labelText: 'Item description:', icon: Icon(Icons.description)),
+              ),
+              TextField(
+                controller: costinp,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                 WhitelistingTextInputFormatter.digitsOnly
+                ], // Only numbers can be entered
+                decoration: new InputDecoration(labelText: 'Item cost:', icon: Icon(Icons.monetization_on)),
+              ),
+            ]
+          ),
         ));
     }
   );
@@ -113,7 +116,8 @@ Future addData(String docID) async{
   setState(() {
     desc=descinp.text;
     cost=int.parse(costinp.text);
-    addedby=name;
+    addedby=username;
+    print(addedby);
   });
 }
 
@@ -137,7 +141,11 @@ Future scan(int index) async {
     if(index==1)
     getData(barcodetext);
     else 
-    addcode(barcodetext);
+    {
+      addedby=username;
+      addcode(barcodetext);
+    }
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -203,28 +211,28 @@ Future scan(int index) async {
               height: 25,
               margin: EdgeInsets.only(top: 50),
               child: Center(
-              child: Text('Code: $barcodetext', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+              child: Text(barcodetext==null? 'Scan a QR code' : 'Code: $barcodetext', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
               )),
               Container(
               width: 400,
               height: 25,
               margin: EdgeInsets.only(top: 30),
               child: Center(
-              child: Text('Title: $desc', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+              child: Text(barcodetext==null? '': 'Title: $desc', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
               )),
               Container(
               width: 400,
               height: 25,
               margin: EdgeInsets.only(top: 30),
               child: Center(
-              child: Text('Cost: $cost', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+              child: Text(barcodetext==null? '' : 'Cost: $cost', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
               )),
               Container(
               width: 400,
               height: 25,
               margin: EdgeInsets.only(top: 30),
               child: Center(
-              child: Text('Added By: ${addedby.toUpperCase()}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+              child: Text(barcodetext==null? '' : 'Added By: ${addedby.toUpperCase()}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
               )),
            ],
            )
