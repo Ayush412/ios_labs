@@ -17,14 +17,26 @@ class _homeState extends State<home> {
 
  _homeState(this.name);
 String name;
-String barcodetext='Snan a barcode';
-String desc;
-String addedby;
+String barcodetext='Scan a barcode';
+String desc='';
+String addedby='';
+String username='';
 TextEditingController descinp = TextEditingController();
 TextEditingController costinp = TextEditingController();
 int cost;
 int index;
 final databaseref = Firestore.instance;
+
+@override
+void initState() { 
+  super.initState();
+  int i=0;
+  while(name[i]!='@')
+  {
+    username+=name[i];
+    i+=1;
+  }
+}
 
 Future getData(String docID) async{
 await databaseref
@@ -35,11 +47,14 @@ await databaseref
     setState(() {
        desc=snap.data['Title'].toString();
        cost=snap.data['Cost'];
-       addedby=snap.data['AddedBy'].toString();
+       int i=0;
+       while(snap.data['AddedBy'].toString()[i] != '@')
+       {
+        addedby+=snap.data['AddedBy'].toString()[i];
+        i+=1;
+       }
     });
   });
-  print(desc);
-  print(cost);
 }
 
 Future addcode(String barcodetext) async {
@@ -151,7 +166,7 @@ Future scan(int index) async {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: Text('Welcome $name', style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: 'Roboto'),),
+        appBar: AppBar(title: Text('Welcome ${username.toUpperCase()}', style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: 'Roboto'),),
         backgroundColor: Colors.white,
         elevation: 0.0,
         ),
@@ -175,41 +190,41 @@ Future scan(int index) async {
               onPressed:() => scan(1),
               ) 
                ),
-        Container( //ADD code
+               Container( //ADD code
               width: 200,
               height: 30,
-              margin: EdgeInsets.only(top: 15),
+              margin: EdgeInsets.only(top: 30),
               child: IconButton(icon: Icon(Icons.add),
               onPressed: () => scan(0),
               ) 
                ),
-        Container(
-              width: 200,
-              height: 20,
-              margin: EdgeInsets.only(top: 15),
+              Container(
+              width: 400,
+              height: 25,
+              margin: EdgeInsets.only(top: 50),
               child: Center(
-              child: Text('Code: $barcodetext')
+              child: Text('Code: $barcodetext', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
               )),
-        Container(
-              width: 200,
-              height: 20,
-              margin: EdgeInsets.only(top: 10),
+              Container(
+              width: 400,
+              height: 25,
+              margin: EdgeInsets.only(top: 30),
               child: Center(
-              child: Text('Title: $desc')
+              child: Text('Title: $desc', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
               )),
-        Container(
-              width: 200,
-              height: 20,
-              margin: EdgeInsets.only(top: 10),
+              Container(
+              width: 400,
+              height: 25,
+              margin: EdgeInsets.only(top: 30),
               child: Center(
-              child: Text('Cost: $cost')
+              child: Text('Cost: $cost', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
               )),
-        Container(
-              width: 200,
-              height: 20,
-              margin: EdgeInsets.only(top: 10),
+              Container(
+              width: 400,
+              height: 25,
+              margin: EdgeInsets.only(top: 30),
               child: Center(
-              child: Text('Added By: $addedby')
+              child: Text('Added By: ${addedby.toUpperCase()}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
               )),
            ],
            )
